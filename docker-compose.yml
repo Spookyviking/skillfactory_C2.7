@@ -63,8 +63,8 @@ services:
       - --log.level=info
       - --store=bolt
       - --bolt.path=/data/bot.db
-      - --telegram.admin=304419621
-      - --telegram.token=7062748622:AAGWwDrLud8QxL9xoVIXiaiHHCXJ67CXBsk
+      - --telegram.admin=573454381
+      - --telegram.token=5472129845:AAFTQRdujqIHgWHbbVtfYWQQvzvIN98KBqg
     image: metalmatze/alertmanager-bot:0.4.3
     user: root
     ports:
