@@ -17,6 +17,8 @@ services:
       TZ: "Europe/Moscow"
     networks:
       - default
+    depends_on:
+      - alertmanager
 
   node-exporter:
     image: prom/node-exporter
