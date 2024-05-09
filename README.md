@@ -31,3 +31,10 @@
   
 В Телеграм алерты можно не отправлять. Если есть желание, в качестве дополнительного задания можно кидать их себе на почту.
 
+
+![Безымянный](https://github.com/Spookyviking/skillfactory_C2.7/assets/95276551/d217dcca-b2a0-4c68-9554-f9ee78cb215e)
+
+
+![Безымянный2](https://github.com/Spookyviking/skillfactory_C2.7/assets/95276551/d78ddbb7-d3ea-4987-80fd-b7b1c5e1d931)
+
+
