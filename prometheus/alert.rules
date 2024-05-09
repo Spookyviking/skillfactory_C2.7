@@ -1,22 +1,6 @@
 groups: 
-- name: portalCheck
+- name: test
   rules:
-  - alert: PortalStatusCode
-    expr: probe_http_status_code != (probe_http_status_code offset 5m)
-    for: 0
-    labels:
-      severity: critical
-    annotations:
-      summary: "Return status code of portal changed"
-      description: "VALUE = {{ $value }}  LABELS: {{ $labels }}"
-  - alert: LongResponse
-    expr: sum(probe_http_duration_seconds) > 5
-    for: 0
-    labels:
-      severity: warning
-    annotations:
-      summary: "It took more than 5 seconds to get a response from portal"
-      description: "May be it's under high load"
   - alert: ServerRestarted
     expr: sum(time() - node_boot_time_seconds{instance="node-exporter:9100"}) == 0
     for: 0
@@ -24,3 +8,58 @@ groups:
       severity: warning
     annotations:
       summary: "Node restarted"
+
+- name: test1
+  rules:
+  - alert: SSL_TLS_Cert_Expiry
+    expr: x509_cert_expiry{job="SSL/TLS Certs"} <= 2592000 
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: SSL/TLS Certificate Expiry
+  
+  - alert: BlackboxSlowProbe
+    expr: avg_over_time(probe_duration_seconds[1m]) > 5
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: Blackbox slow probe (instance {{ $labels.instance }})
+      description: "Blackbox probe took more than 1s to complete\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+
+  - alert: BlackboxProbeHttpFailure
+    expr: probe_http_status_code <= 199 OR probe_http_status_code >= 400
+    for: 0m
+    labels:
+      severity: critical
+    annotations:
+      summary: Blackbox probe HTTP failure (instance {{ $labels.instance }})
+      description: "HTTP status code is not 200-399\n  VALUE = {{ $value }}\n  LABELS = {{ $labels }}"
+  
+  - alert: service_down
+    expr: up == 0
+    for: 30s
+    labels:
+      severity: page
+    annotations:
+      summary: "Instance {{ $labels.instance }} down"
+      description: "{{ $labels.instance }} of job {{ $labels.job }} has been down for more than 30 seconds."
+
+  - alert: high_load
+    expr: node_load1 > 0.8
+    for: 30s
+    labels:
+      severity: page
+    annotations:
+      summary: "Instance {{ $labels.instance }} under high load"
+      description: "{{ $labels.instance }} of job {{ $labels.job }} is under high load."
+
+  - alert: site_down
+    expr: probe_success < 1
+    for: 30s
+    labels:
+      severity: page
+    annotations:
+      summary: "Site Down: {{$labels.instance}}"
+      description: "Site Down: {{$labels.instance}} for more than 30 seconds"
